@@ -12,6 +12,7 @@ class account_without_login:
 		self.ACCESS_TOKEN = "a15ebe88a15ebe88a15ebe8871a13fc578aa15ea15ebe88fa546557fbb1e4cc820c017d"
 		self.VK_API = "https://api.vk.com/method/"
 		self.ACCOUNT_LINK = "https://vk.com/id"
+		self.API_VERSION = "5.52"
 		self.frineds_list = []
 		self.banned_users = []
 		self.info_of_user = None
@@ -22,7 +23,7 @@ class account_without_login:
 	def check_id(self, id):
 		parametrs = {"user_id": self.user_id,
 	     		 	 "access_token": self.ACCESS_TOKEN,
-	     		 	 "v": "5.52"}
+	     		 	 "v": self.API_VERSION}
 		req = requests.get(self.VK_API + "users.get", params = parametrs)
 		info_of_user = req.json()
 		if "error" in info_of_user:
@@ -40,7 +41,7 @@ class account_without_login:
 					 "access_token": self.ACCESS_TOKEN,
 					 "order": "name",
 					 "fields": "online, photo_50",
-					 "v": "5.52"}
+					 "v": self.API_VERSION}
 
 		req = requests.get(self.VK_API + "friends.get", params = parametrs)
 
@@ -51,14 +52,14 @@ class account_without_login:
 
 	def get_banned_user(self):
 		print("Your deleted friends: ")
-		for _ in self.frineds_list:
-			if _["photo_50"] == "https://vk.com/images/deactivated_50.png":
-				_["link"] = (self.ACCOUNT_LINK + str(_["id"]))
-				self.banned_users.append(_)
+		for friend in self.frineds_list:
+			if friend["photo_50"] == "https://vk.com/images/deactivated_50.png":
+				friend["link"] = (self.ACCOUNT_LINK + str(friend["id"]))
+				self.banned_users.append(friend)
 
 	def print_banned_friend(self):
-		for _ in self.banned_users:
-			print(f'{_["first_name"]} {_["last_name"]} ({_["link"]})')
+		for banned_user in self.banned_users:
+			print(f'{banned_user["first_name"]} {banned_user["last_name"]} ({banned_user["link"]})')
 		print(f'Count: {"You havent deleted friends" if ((len(self.banned_users)) == 0) else {len(self.banned_users)}}')
 
 # 183230376
