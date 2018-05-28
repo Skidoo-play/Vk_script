@@ -1,7 +1,3 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
-# vim:fileencoding=utf-8
-# https://api.vk.com/method/users.get?user_id=210700286&v=5.52
 # my id 135480774
 import requests
 import json
@@ -62,7 +58,6 @@ class account_without_login:
 			print(f'{banned_user["first_name"]} {banned_user["last_name"]} ({banned_user["link"]})')
 		print(f'Count: {"You havent deleted friends" if ((len(self.banned_users)) == 0) else {len(self.banned_users)}}')
 
-# 183230376
 Anon = account_without_login(input("Input your vk id: "))
 Anon.print_info_about_user()
 Anon.friends_get()
