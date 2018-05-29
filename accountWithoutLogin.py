@@ -24,8 +24,8 @@ class AccountWithoutLogin:
 
 	def check_id(self, id):
 		parametrs = {"user_id": self.user_id,
-	     		 	 "access_token": self.ACCESS_TOKEN,
-	     		 	 "v": self.API_VERSION}
+					 "access_token": self.ACCESS_TOKEN,
+					 "v": self.API_VERSION}
 		req = requests.get(self.VK_API + "users.get", params = parametrs)
 		info_of_user = req.json()
 		if "error" in info_of_user:
@@ -68,12 +68,12 @@ class AccountWithoutLogin:
 	def print_banned_friends(self):
 		for banned_user in self.banned_users:
 			print(f'{banned_user["first_name"]} {banned_user["last_name"]} ({banned_user["link"]})')
-		print(f'Count: {"You havent banned friends" if (((self.count_banned_users)) == 0) else {len(self.banned_users)}}')
+		print(f'Count: {"You havent banned friends" if (self.count_banned_users == 0) else {self.count_banned_users}}')
 
 	def print_deleted_friends(self):
 		for deleted_user in self.deleted_users:
 			print(f'{deleted_user["first_name"]} {deleted_user["last_name"]} ({deleted_user["link"]})')
-		print(f'Count: {"You havent deleted friends" if ((len(self.count_deleted_users)) == 0) else {len(self.deleted_users)}}')
+		print(f'Count: {"You havent deleted friends" if (self.count_deleted_users == 0) else {self.count_deleted_users}}')
 
 # Anon = AccountWithoutLogin(input("Input your vk id: "))
 Anon = AccountWithoutLogin(135480774)
