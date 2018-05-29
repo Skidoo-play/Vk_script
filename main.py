@@ -1,15 +1,18 @@
+#!/usr/local/bin/python3
+
 # my id 135480774
 import requests
 import json
+import os
 
-class account_without_login:
+class AccountWithoutLogin:
 	def __init__(self, id):
 		self.user_id = str(id)
-		self.ACCESS_TOKEN = "a15ebe88a15ebe88a15ebe8871a13fc578aa15ea15ebe88fa546557fbb1e4cc820c017d"
+		self.ACCESS_TOKEN = os.environ["VK_ACCESS_TOKEN"]
 		self.VK_API = "https://api.vk.com/method/"
 		self.ACCOUNT_LINK = "https://vk.com/id"
 		self.API_VERSION = "5.52"
-		self.frineds_list = []
+		self.friends_list = []
 		self.banned_users = []
 		self.info_of_user = None
 
@@ -44,11 +47,11 @@ class account_without_login:
 		with open("all friends.json", "w") as json_file:
 			json_data = req.json()
 			json.dump(json_data, json_file)
-			self.frineds_list = json_data["response"]["items"]
+			self.friends_list = json_data["response"]["items"]
 
 	def get_banned_user(self):
 		print("Your deleted friends: ")
-		for friend in self.frineds_list:
+		for friend in self.friends_list:
 			if friend["photo_50"] == "https://vk.com/images/deactivated_50.png":
 				friend["link"] = (self.ACCOUNT_LINK + str(friend["id"]))
 				self.banned_users.append(friend)
@@ -58,7 +61,7 @@ class account_without_login:
 			print(f'{banned_user["first_name"]} {banned_user["last_name"]} ({banned_user["link"]})')
 		print(f'Count: {"You havent deleted friends" if ((len(self.banned_users)) == 0) else {len(self.banned_users)}}')
 
-Anon = account_without_login(input("Input your vk id: "))
+Anon = AccountWithoutLogin(input("Input your vk id: "))
 Anon.print_info_about_user()
 Anon.friends_get()
 Anon.get_banned_user()
