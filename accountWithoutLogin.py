@@ -36,27 +36,35 @@ class AccountWithoutLogin:
 		return True
 
 	def print_info_about_user(self):
-		print(f'Ok your account is: {self.info_of_user["first_name"]} {self.info_of_user["last_name"]} ({self.info_of_user["link"]})')
+		print(f'Ok your account is: {self.info_of_user["first_name"]} {self.info_of_user["last_name"]} ({self.info_of_user["link"]})', end = "")
 		return
 	
-	def friends_get(self):
+	def refresh_lists_banned_and_deleted_users(self):
 		self.count_banned_users = 0
 		self.count_deleted_users = 0
+		self.banned_users = []
+		self.deleted_users = []
+
+	def friends_get(self):
+		self.refresh_lists_banned_and_deleted_users()
 		parametrs = {"user_id": self.user_id,
 					 "access_token": self.ACCESS_TOKEN,
 					 "order": "name",
 					 "fields": "online, photo_50",
 					 "v": self.API_VERSION}
 
-		req = requests.get(self.VK_API + "friends.get", params = parametrs)
+		req_friends_of_user = requests.get(self.VK_API + "friends.get", params = parametrs)
+		json_data = req_friends_of_user.json()
 
-		with open("all friends.json", "w") as json_file:
-			json_data = req.json()
-			json.dump(json_data, json_file)
-			self.count_public_friends = json_data["response"]["count"]
-			self.friends_list = json_data["response"]["items"]
+		self.save_data_in_json(json_data,"All friends")
+		self.count_public_friends = json_data["response"]["count"]
+		self.friends_list = json_data["response"]["items"]
 
-	def get_banned_and_deleted_user(self):
+	def save_data_in_json(self, data, file_name):
+		with open(str(file_name) + ".json", "w") as json_file:
+			json.dump(data, json_file)
+
+	def get_banned_and_deleted_friends(self):
 		for friend in self.friends_list:
 			if "deactivated" in friend:
 				friend["link"] = (self.ACCOUNT_LINK + str(friend["id"]))
@@ -70,19 +78,16 @@ class AccountWithoutLogin:
 	def print_banned_friends(self):
 		for banned_user in self.banned_users:
 			print(f'{banned_user["first_name"]} {banned_user["last_name"]} ({banned_user["link"]})')
-		print(f'Count: {"You havent banned friends" if (self.count_banned_users == 0) else {self.count_banned_users}}')
 	
 	def print_deleted_friends(self):
 		for deleted_user in self.deleted_users:
 			print(f'{deleted_user["first_name"]} {deleted_user["last_name"]} ({deleted_user["link"]})')
-		print(f'Count: {"You havent deleted friends" if (self.count_deleted_users == 0) else {self.count_deleted_users}}')
 
-# Anon = AccountWithoutLogin(input("Input your vk id: "))
-Anon = AccountWithoutLogin(135480774)
-Anon.print_info_about_user()
-Anon.friends_get()
-Anon.get_banned_and_deleted_user()
-print("Your banned friends: ")
-Anon.print_banned_friends()
-print("Your deleted friends: ")
-Anon.print_deleted_friends()
+	def get_count_banned(self):
+		return self.count_banned_users
+	
+	def get_count_deleted(self):
+		return self.count_deleted_users
+	
+	def get_count_friends(self):
+		return self.count_public_friends

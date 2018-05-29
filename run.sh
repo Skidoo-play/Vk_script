@@ -4,4 +4,4 @@ for bash_script in .env/*.sh; do
 	source $bash_script
 done
 
-./accountWithoutLogin.py $@
+./test.py $@
