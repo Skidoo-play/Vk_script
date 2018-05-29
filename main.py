@@ -14,6 +14,9 @@ class AccountWithoutLogin:
 		self.API_VERSION = "5.52"
 		self.friends_list = []
 		self.banned_users = []
+		self.count_banned_users = 0
+		self.deleted_users =[]
+		self.count_deleted_users = 0
 		self.info_of_user = None
 
 		while (not self.check_id(self.user_id)):
@@ -36,6 +39,8 @@ class AccountWithoutLogin:
 		return
 	
 	def friends_get(self):
+		self.count_banned_users = 0
+		self.count_deleted_users = 0
 		parametrs = {"user_id": self.user_id,
 					 "access_token": self.ACCESS_TOKEN,
 					 "order": "name",
@@ -49,20 +54,37 @@ class AccountWithoutLogin:
 			json.dump(json_data, json_file)
 			self.friends_list = json_data["response"]["items"]
 
-	def get_banned_user(self):
-		print("Your deleted friends: ")
+	def get_banned_and_deleted_user(self):
 		for friend in self.friends_list:
-			if friend["photo_50"] == "https://vk.com/images/deactivated_50.png":
+			if "deactivated" in friend:
 				friend["link"] = (self.ACCOUNT_LINK + str(friend["id"]))
-				self.banned_users.append(friend)
+				if friend["deactivated"] == "banned":
+					self.banned_users.append(friend)
+					self.count_banned_users += 1
+				elif friend["deactivated"] == "deleted":
+					self.banned_users.append(friend)
+					self.count_deleted_users += 1
 
-	def print_banned_friend(self):
+			# if friend["photo_50"] == "https://vk.com/images/deactivated_50.png":
+			# 	friend["link"] = (self.ACCOUNT_LINK + str(friend["id"]))
+			# 	self.banned_users.append(friend)
+
+	def print_banned_friends(self):
 		for banned_user in self.banned_users:
 			print(f'{banned_user["first_name"]} {banned_user["last_name"]} ({banned_user["link"]})')
-		print(f'Count: {"You havent deleted friends" if ((len(self.banned_users)) == 0) else {len(self.banned_users)}}')
+		print(f'Count: {"You havent banned friends" if ((len(self.banned_users)) == 0) else {len(self.banned_users)}}')
 
-Anon = AccountWithoutLogin(input("Input your vk id: "))
+	def print_deleted_friends(self):
+		for deleted_user in self.deleted_users:
+			print(f'{deleted_user["first_name"]} {deleted_user["last_name"]} ({deleted_user["link"]})')
+		print(f'Count: {"You havent deleted friends" if ((len(self.deleted_users)) == 0) else {len(self.deleted_users)}}')
+
+# Anon = AccountWithoutLogin(input("Input your vk id: "))
+Anon = AccountWithoutLogin(135480774)
 Anon.print_info_about_user()
 Anon.friends_get()
-Anon.get_banned_user()
-Anon.print_banned_friend()
+Anon.get_banned_and_deleted_user()
+print("Your banned friends: ")
+Anon.print_banned_friends()
+print("Your deleted friends: ")
+Anon.print_deleted_friends()
