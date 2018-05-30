@@ -1,9 +1,12 @@
 #!/usr/local/bin/python3
 import accountWithoutLogin
+import sys
 
 def main():
-    # Anon = AccountWithoutLogin(input("Input your vk id: "))
-    Anon = accountWithoutLogin.AccountWithoutLogin(135480774)
+    if len(sys.argv) <= 1:
+        Anon = accountWithoutLogin.AccountWithoutLogin(input("Input your vk id: "))
+    else:
+        Anon = accountWithoutLogin.AccountWithoutLogin(sys.argv[1])
     Anon.print_info_about_user()
     Anon.get_public_friends()
     print(f'\nYou have ({Anon.get_count_friends()}) friends')
