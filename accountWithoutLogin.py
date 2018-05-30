@@ -24,14 +24,10 @@ class AccountWithoutLogin:
 			self.user_id = input("trooll heyv, input real ID!: ")
 
 	def check_id(self, id):
-		parametrs = {"user_id": self.user_id,
-					 "access_token": self.ACCESS_TOKEN,
-					 "v": self.API_VERSION}
-		req = requests.get(self.VK_API + "users.get", params = parametrs)
-		info_of_user = req.json()
-		if "error" in info_of_user:
+		request_info_of_user = self.request_json("users.get")
+		if "error" in request_info_of_user:
 			return False
-		self.info_of_user = info_of_user["response"][0]
+		self.info_of_user = request_info_of_user["response"][0]
 		self.info_of_user["link"] = (self.ACCOUNT_LINK + self.user_id)
 		return True
 
@@ -45,20 +41,23 @@ class AccountWithoutLogin:
 		self.banned_users = []
 		self.deleted_users = []
 
-	def friends_get(self):
+	def request_json(self, method, parametrs = {}, **kwargs):
+		if "vk_id" not in kwargs:
+			kwargs["vk_id"] = self.user_id
+		req = requests.get(self.VK_API + str(method) + "?access_token=" + self.ACCESS_TOKEN + "&user_id=" + str(kwargs["vk_id"]) + "&v=" + self.API_VERSION, params=parametrs)
+		json_data = req.json()
+		return json_data
+
+	def get_public_friends(self):
 		self.refresh_lists_banned_and_deleted_users()
-		parametrs = {"user_id": self.user_id,
-					 "access_token": self.ACCESS_TOKEN,
-					 "order": "name",
-					 "fields": "online, photo_50",
-					 "v": self.API_VERSION}
+		parametrs = {"order": "name",
+					 "fields": "online"}
 
-		req_friends_of_user = requests.get(self.VK_API + "friends.get", params = parametrs)
-		json_data = req_friends_of_user.json()
-
-		self.save_data_in_json(json_data,"All friends")
-		self.count_public_friends = json_data["response"]["count"]
-		self.friends_list = json_data["response"]["items"]
+		request_friends_of_user = self.request_json("friends.get", parametrs)
+		
+		self.save_data_in_json(request_friends_of_user,"All friends")
+		self.count_public_friends = request_friends_of_user["response"]["count"]
+		self.friends_list = request_friends_of_user["response"]["items"]
 
 	def save_data_in_json(self, data, file_name):
 		with open(str(file_name) + ".json", "w") as json_file:
