@@ -6,7 +6,7 @@ import requests
 import json
 import os
 
-class AccountWithoutLogin(object):
+class AccountWithoutLogin():
 	__service = serviceVk.ServiceVk()
 	__friends_list = []
 	__info_of_account = None
