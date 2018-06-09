@@ -1,3 +1,4 @@
+#!/usr/local/bin/python3
 
 class User():
     __info_of_user = None
