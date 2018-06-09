@@ -29,8 +29,5 @@ def main():
     print(f'    Count: {"You havent deleted accounts in friends" if (Anon.get_count_deleted() == 0) else {Anon.get_count_deleted()}}')
 
 
-
-
-
 if __name__ == '__main__':
     main()

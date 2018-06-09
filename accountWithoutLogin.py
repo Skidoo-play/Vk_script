@@ -7,20 +7,19 @@ import json
 import os
 
 class AccountWithoutLogin(object):
-	__service = serviceVk.ServiseVk()
+	__service = serviceVk.ServiceVk()
 	__friends_list = []
-	__info_of_user = None
+	__info_of_account = None
 
 	def auth_account(self, id):
-		self.__info_of_user = self.__service.authoriz_account(id)
-		return self.__info_of_user
+		self.__info_of_account = self.__service.request_info_of_account(id)
+		return self.__info_of_account.get_user_info()
 
 	def get_info_about_user(self):
-		return self.__info_of_user
+		return self.__info_of_account
 
 	def get_public_friends(self):
-		request_friends_of_user = self.__service.requests_public_friend_list()
-		self.__friends_list = request_friends_of_user["response"]["items"]
+		self.__friends_list = self.__service.requests_public_friend_list(self.__info_of_account["id"])
 		return self.__friends_list
 
 	def save_data_in_json(self, data, file_name):
