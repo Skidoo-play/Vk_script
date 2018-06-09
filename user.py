@@ -11,7 +11,7 @@ class User():
         else:
             raise IOError("You cannot change info this functuoin")
     
-    def change_info(self, key, value):
+    def __setitem__(self, key, value):
         if key in self.__info_of_user:
             self.__info_of_user[key] = value
         else:
