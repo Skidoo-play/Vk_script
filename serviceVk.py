@@ -14,7 +14,7 @@ class ServiceVk():
     
     def request_info_of_account(self, vk_account_id):
         self.__vk_user.set_user(self.__request_json("users.get", params={"user_ids": vk_account_id}))
-        self.__vk_user.add_info("link", self.__ACCOUNT_LINK + "id" + self.__vk_user["id"])
+        self.__vk_user["link"] = self.__ACCOUNT_LINK + "id" + self.__vk_user["id"]
         return self.__vk_user
 
     def check_id_on_exists(self, vk_account_id):

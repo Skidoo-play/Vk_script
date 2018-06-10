@@ -6,17 +6,10 @@ class User():
     def set_user(self, info_of_user):
          self.__info_of_user = info_of_user["response"][0]
 
-    def add_info(self, key, value):
-        if key not in self.__info_of_user:
-            self.__info_of_user[key] = value
-        else:
-            raise IOError("You cannot change info this functuoin")
+#TODO ADD CONTAINS
     
     def __setitem__(self, key, value):
-        if key in self.__info_of_user:
-            self.__info_of_user[key] = value
-        else:
-            raise IOError("You cannot change information which not exists")
+        self.__info_of_user[key] = value
     
     def get_user_info(self):
         return self.__info_of_user

@@ -17,10 +17,21 @@ print(r""" _____________________________________
    \ >()_
       (__)__ _""")
 
+
+def done_message():
+    print("****************")
+    print(f"""\n DONE \n""")
+    print("****************")
+
+def eror_input_message():
+    print("****************")
+    print(f"""\n INCORRECT INPUT \n""")
+    print("****************")
+
 while True:
     print("Menu")
     print(f"""1) Set user \n2) Show banned and deleted account in friends \n3) Exit \nCurrently account: {account}""")
-    answer = input()
+    answer = input("Choose number of menu item: ")
 
     
     if answer == "3":
@@ -39,22 +50,25 @@ while True:
         account = anon.get_info_about_account()
         auth = True
         account = (f'{account["first_name"]} {account["last_name"]} ({account["link"]}).\n')
+        done_message()
 
     elif (answer == "2"):
         if auth == False:
             print("\n***Pleasy, set user***\n")
             continue
         ban_and_del_acc = anon.get_banned_and_deleted_friends()
-        ban_acc = ban_and_del_acc["banned"]
-        del_acc = ban_and_del_acc["deleted"]
+        count_deleted = anon.get_count_deleted()
+        count_banned = anon.get_count_banned()
         print("****************")
         print(f'All friends: ({anon.get_count_friends()}).')
         print("Your banned friends: ")
-        for banned_account in ban_acc:
+        for banned_account in ban_and_del_acc["banned"]:
             print(f'{banned_account["first_name"]} {banned_account["last_name"]} ({banned_account["link"]})')
-        print(f'    Count: {"You havent banned accounts in friends" if (anon.get_count_banned() == 0) else {anon.get_count_banned()}}')
+        print(f'    Count: {"You havent banned accounts in friends" if (count_banned == 0) else {count_banned}}')
         print("Your deleted friends: ")
-        for deleted_account in del_acc:
+        for deleted_account in ban_and_del_acc["deleted"]:
             print(f'{deleted_account["first_name"]} {deleted_account["last_name"]} ({deleted_account["link"]})')
-        print(f'    Count: {"You havent deleted accounts in friends" if (anon.get_count_deleted() == 0) else {anon.get_count_deleted()}}')
+        print(f'    Count: {"You havent deleted accounts in friends" if (count_deleted == 0) else {count_deleted}}')
         print("****************")
+    else:
+        eror_input_message()

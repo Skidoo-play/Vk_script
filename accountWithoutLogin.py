@@ -8,7 +8,6 @@ import os
 
 class AccountWithoutLogin():
 	__service = serviceVk.ServiceVk()
-	__friends_list = []
 	__info_of_account = None
 
 	def set_account(self, id):
@@ -19,8 +18,8 @@ class AccountWithoutLogin():
 		return self.__info_of_account
 
 	def get_public_friends(self):
-		self.__friends_list = self.__service.requests_public_friend_list(self.__info_of_account["id"])
-		return self.__friends_list
+		friends_list = self.__service.requests_public_friend_list(self.__info_of_account["id"])
+		return friends_list
 
 	def save_data_in_json(self, data, file_name):
 		with open(str(file_name) + ".json", "w") as json_file:
@@ -29,9 +28,8 @@ class AccountWithoutLogin():
 	def get_banned_and_deleted_friends(self):
 		banned_accounts  = []
 		deleted_accounts = []
-		if self.get_count_friends() == 0:
-			self.get_public_friends()
-		for friend in self.__friends_list:
+		friends_list = self.get_public_friends()
+		for friend in friends_list:
 			if "deactivated" in friend:
 				friend["link"] = ("https://vk.com/id" + str(friend["id"]))
 				if friend["deactivated"] == "deleted":
@@ -47,4 +45,4 @@ class AccountWithoutLogin():
 		return len(self.get_banned_and_deleted_friends()["deleted"])
 	
 	def get_count_friends(self):
-		return len(self.__friends_list)
+		return len(self.get_public_friends())
