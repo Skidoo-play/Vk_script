@@ -4,7 +4,7 @@ class User():
     __info_of_user = None
 
     def set_user(self, info_of_user):
-         self.__info_of_user = info_of_user["response"][0]
+         self.__info_of_user = info_of_user
 
 #TODO ADD CONTAINS
     
