@@ -30,15 +30,17 @@ def eror_input_message():
 
 while True:
     print("Menu")
-    print(f"""1) Set user \n2) Show banned and deleted account in friends \n3) Exit \nCurrently account: {account}""")
+    print(f"""1) Set user
+2) Show banned and deleted account in friends
+3) Show who last was half year past
+0) Exit
+Currently account: {account}""")
     answer = input("Choose number of menu item: ")
-
-    
-    if answer == "3":
+    if answer == "0":
         break
 
     elif answer == "1":
-        anon_id = input("Input vk id: ")
+        anon_id = input("Input vk id: https://vk.com/")
         try:
             service.check_id_on_exists(anon_id)
         except:
@@ -56,7 +58,7 @@ while True:
         if auth == False:
             print("\n***Pleasy, set user***\n")
             continue
-        ban_and_del_acc = anon.get_banned_and_deleted_friends()
+        ban_and_del_acc = anon.get_non_active_friends()
         count_deleted = anon.get_count_deleted()
         count_banned = anon.get_count_banned()
         print("****************")
@@ -70,5 +72,18 @@ while True:
             print(f'{deleted_account["first_name"]} {deleted_account["last_name"]} ({deleted_account["link"]})')
         print(f'    Count: {"You havent deleted accounts in friends" if (count_deleted == 0) else {count_deleted}}')
         print("****************")
+    
+    elif (answer == "3"):
+        if auth == False:
+            print("\n***Pleasy, set user***\n")
+            continue
+        print("****************")
+        friends = anon.get_non_active_friends()
+        count_friends = len(friends)
+        for friend in friends:
+            print(f'{friend["first_name"]} {friend["last_name"]} \n  offline: {friend["count_day_offline"]} days. ({friend["link"]})')
+        print(f'Count: {"Zero accounts" if (count_friends == 0) else {count_friends}}')
+        print("****************")
+
     else:
         eror_input_message()
