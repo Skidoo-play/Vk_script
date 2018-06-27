@@ -58,7 +58,7 @@ Currently account: {account}""")
         if auth == False:
             print("\n***Pleasy, set user***\n")
             continue
-        ban_and_del_acc = anon.get_non_active_friends()
+        ban_and_del_acc = anon.get_banned_and_deleted_friends()
         count_deleted = anon.get_count_deleted()
         count_banned = anon.get_count_banned()
         print("****************")
