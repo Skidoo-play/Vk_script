@@ -37,15 +37,16 @@ class AccountWithoutLogin():
 		non_active_accounts = []
 		half_year = 365/2
 		friends_list = self.get_public_friends()
-		friends_list = list(filter(lambda friend: friend["online"] != 1, friends_list)) #toss online users
-		friends_list = list(filter(lambda friend: "deactivated" not in friend, friends_list)) #toss deactivate users
-		friends_list = list(filter(lambda friend: datetime.datetime.fromtimestamp(friend["last_seen"]["time"]).date() != currently_date, friends_list)) #toss who was online today
-		for friend in friends_list:
-			last_seen_of_account = datetime.datetime.fromtimestamp(friend["last_seen"]["time"]).date()
-			how_long_days_user_not_online = (currently_date - last_seen_of_account).days
-			if how_long_days_user_not_online > half_year:
-				friend["count_day_offline"] = how_long_days_user_not_online
-				non_active_accounts.append(friend)
+		friends_list = filter(lambda friend: friend["online"] == 0 and "deactivated" not in friend, friends_list) #toss online users
+		
+		def add_info_count_not_active_days(user):
+			nonlocal currently_date
+			last_seen_of_account = datetime.datetime.fromtimestamp(user["last_seen"]["time"]).date()
+			user["count_day_offline"] = (currently_date - last_seen_of_account).days
+			return user
+
+		non_active_accounts = map(add_info_count_not_active_days, friends_list)
+		non_active_accounts = list(filter(lambda user: user["count_day_offline"] > half_year, non_active_accounts))
 		return non_active_accounts
 		
 	def get_count_banned(self):
