@@ -2,8 +2,8 @@
 
 import sys
 import color
-import serviceVk
 import account
+import serviceVk
 
 service = serviceVk.ServiceVk()
 anon = None
@@ -41,10 +41,11 @@ while True:
 0) Exit
 Currently account: {account}""")
     answer = input("Choose number of menu item: ")
-    if answer == "0":
+
+    if (answer == "0"):
         break
 
-    elif answer == "1":
+    elif (answer == "1"):
         anon_id = input("Input vk id: https://vk.com/")
         try:
             service.check_id_on_exists(anon_id)
