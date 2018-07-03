@@ -1,15 +1,14 @@
 #!/usr/local/bin/python3
 
-import requests
 import os
+import requests
 import account
 
-class ServiceVk():
+class ServiceVk:
     __ACCESS_TOKEN = os.environ["VK_ACCESS_TOKEN"]
     __VK_API       = "https://api.vk.com/method/"
     __API_VERSION  = "5.80"
     __LANGUAGE     = "ru"
-    __vk_user      = None
     
     def request_info_of_account(self, vk_account_id):
         account_info   = self.__request_json("users.get", params={"user_ids": vk_account_id, "fields":"online"})["response"][0]

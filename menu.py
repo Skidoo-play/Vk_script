@@ -1,13 +1,15 @@
 #!/usr/local/bin/python3
 
-import serviceVk
-import accountWithoutLogin
 import sys
+import color
+import serviceVk
+import account
 
-anon = accountWithoutLogin.AccountWithoutLogin()
 service = serviceVk.ServiceVk()
+anon = None
 auth = False
 account = None
+
 print(r""" _____________________________________
 / Welcom to my first program!          \
 \ (c)Mikhail Ulyakov (vk.com/shzfrnia) /
@@ -20,13 +22,16 @@ print(r""" _____________________________________
 
 def done_message():
     print("****************")
-    print(f"""\n DONE \n""")
+    print(color.green(f"""\n DONE \n"""))
     print("****************")
 
 def eror_input_message():
     print("****************")
-    print(f"""\n INCORRECT INPUT \n""")
+    print(color.red(f"""\n INCORRECT INPUT \n"""))
     print("****************")
+
+def please_set_user_message():
+    print(color.red("\n***Pleasy, set user***\n"))
 
 while True:
     print("Menu")
@@ -45,18 +50,19 @@ Currently account: {account}""")
             service.check_id_on_exists(anon_id)
         except:
             print("****************")
-            print(f"""Syrry, but account {"vk.com/" + anon_id} is not exists.\nPlease, try again""")
+            print(color.red(f"""Syrry, but account: """), end = "")
+            print(color.colorize(color.BgColor.Null, color.Base.Underline, color.FgColor.Red, "vk.com/" + anon_id), end = " ")
+            print(color.red("is not exists.\nPlease, try again"))
             print("****************")
             continue
-        anon.set_account(anon_id)
-        account = anon.get_info_about_account()
+        anon = service.request_info_of_account(anon_id)
         auth = True
-        account = (f'{account["first_name"]} {account["last_name"]} ({account["link"]}).\n')
+        account = f'{color.cyan(anon.get_name())} ({anon.get_link()}).\n'
         done_message()
 
     elif (answer == "2"):
         if auth == False:
-            print("\n***Pleasy, set user***\n")
+            please_set_user_message()
             continue
         ban_and_del_acc = anon.get_banned_and_deleted_friends()
         count_deleted = anon.get_count_deleted()
@@ -65,23 +71,23 @@ Currently account: {account}""")
         print(f'All friends: ({anon.get_count_friends()}).')
         print("Your banned friends: ")
         for banned_account in ban_and_del_acc["banned"]:
-            print(f'{banned_account["first_name"]} {banned_account["last_name"]} ({banned_account["link"]})')
+            print(f'{banned_account.get_name()} ({banned_account.get_link()})')
         print(f'    Count: {"You havent banned accounts in friends" if (count_banned == 0) else {count_banned}}')
         print("Your deleted friends: ")
         for deleted_account in ban_and_del_acc["deleted"]:
-            print(f'{deleted_account["first_name"]} {deleted_account["last_name"]} ({deleted_account["link"]})')
+            print(f'{deleted_account.get_name()} ({deleted_account.get_link()})')
         print(f'    Count: {"You havent deleted accounts in friends" if (count_deleted == 0) else {count_deleted}}')
         print("****************")
     
     elif (answer == "3"):
         if auth == False:
-            print("\n***Pleasy, set user***\n")
+            please_set_user_message()
             continue
         print("****************")
         friends = anon.get_non_active_friends()
         count_friends = len(friends)
         for friend in friends:
-            print(f'{friend["first_name"]} {friend["last_name"]} \n  offline: {friend["count_day_offline"]} days. ({friend["link"]})')
+            print(f'{friend.get_name()} \n  offline: {friend.get_days_offline()} days. ({friend.get_link()})')
         print(f'Count: {"Zero accounts" if (count_friends == 0) else {count_friends}}')
         print("****************")
 

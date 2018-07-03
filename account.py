@@ -3,18 +3,17 @@
 import datetime
 import serviceVk
 
-class Account(object):
-
+class Account:
     def __init__(self, profile):
         self.__online      = profile["online"]
         self.__first_name  = profile["first_name"]
         self.__second_name = profile["last_name"]
         self.__id          = profile["id"]
         self.__last_seen   = profile["last_seen"]["time"] if "last_seen"in profile else None
+        self.__dectivated  = profile["deactivated"] if "deactivated" in profile else False
         self.__count_days_offline = None
         self.__link        = "https://vk.com/" + str(profile["id"])
         self.__service     = serviceVk.ServiceVk()
-        self.__dectivated  = profile["deactivated"] if "deactivated" in profile else False
 
     def get_id(self):
         return self.__id
@@ -32,10 +31,10 @@ class Account(object):
     def add_count_days_offline(self, days):
         self.__count_days_offline = days
 
-    def get_count_days_offline(self):
+    def get_days_offline(self):
         return self.__count_days_offline
 
-    def get_last_seen(self):
+    def __get_last_seen(self):
         return self.__last_seen
     
     def get_count_banned(self):
@@ -60,14 +59,15 @@ class Account(object):
         friends_list = self.get_public_friends()
         friends_list = filter(lambda friend: (not friend.is_online()) and  (not friend.is_deactivated()), friends_list)
 
-        def add_info_count_not_active_days(user):
+        def add_info_count_not_active_days(account):
             nonlocal currently_date
-            last_seen_of_account = datetime.datetime.fromtimestamp(user.get_last_seen()).date()
-            user.add_count_days_offline((currently_date - last_seen_of_account).days)
-            return user
+            last_seen_of_account = datetime.datetime.fromtimestamp(account.__get_last_seen()).date()
+            days_offline = (currently_date - last_seen_of_account).days
+            account.add_count_days_offline(days_offline)
+            return account
 
         non_active_accounts = map(add_info_count_not_active_days, friends_list)
-        non_active_accounts = list(filter(lambda user: user.get_count_days_offline() > half_year, non_active_accounts))
+        non_active_accounts = list(filter(lambda user: user.get_days_offline() > half_year, non_active_accounts))
         return non_active_accounts
 
     def is_deactivated(self):
