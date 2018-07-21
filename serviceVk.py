@@ -46,8 +46,5 @@ class ServiceVk:
         req = self.__request_json("friends.get", parametrs)
         friends_list = req["response"]["items"]
 
-        def create_account_object(friend):
-            return account.Account(friend)
-
-        friends_list = list(map(create_account_object, friends_list))
+        friends_list = list(map(account.Account, friends_list))
         return friends_list

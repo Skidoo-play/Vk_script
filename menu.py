@@ -11,7 +11,7 @@ auth = False
 account = None
 
 print(r""" _____________________________________
-/ Welcom to my first program!          \
+/ Welcom to my first programm!         \
 \ (c)Mikhail Ulyakov (vk.com/shzfrnia) /
  -------------------------------------
  \
@@ -86,6 +86,7 @@ Currently account: {account}""")
             continue
         print("****************")
         friends = anon.get_non_active_friends()
+        friends = sorted(friends, key = lambda friend: friend.get_days_offline(), reverse = 1)
         count_friends = len(friends)
         for friend in friends:
             print(f'{friend.get_name()} \n  offline: {friend.get_days_offline()} days. ({friend.get_link()})')

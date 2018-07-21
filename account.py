@@ -13,7 +13,7 @@ class Account:
         self.__last_seen = profile["last_seen"]["time"] if "last_seen"in profile else None
         self.__dectivated = profile["deactivated"] if "deactivated" in profile else False
         self.__count_days_offline = None
-        self.__link = "https://vk.com/" + str(profile["id"])
+        self.__link = "https://vk.com/id" + str(profile["id"])
         self.__service = serviceVk.ServiceVk()
 
     def get_id(self):
