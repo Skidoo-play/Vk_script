@@ -3,9 +3,9 @@
 import sys
 import color
 import account
-import serviceVk
+import service_vk
 
-service = serviceVk.ServiceVk()
+service = service_vk.ServiceVk()
 anon = None
 auth = False
 account = None

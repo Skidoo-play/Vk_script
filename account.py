@@ -1,20 +1,20 @@
 #!/usr/local/bin/python3
 
 import datetime
-import serviceVk
+import service_vk
 
 
 class Account:
     def __init__(self, profile):
+        self.__service = service_vk.ServiceVk()
         self.__online = profile["online"]
         self.__first_name = profile["first_name"]
         self.__second_name = profile["last_name"]
         self.__id = profile["id"]
-        self.__last_seen = profile["last_seen"]["time"] if "last_seen"in profile else None
+        self.__last_seen = profile["last_seen"]["time"] if "last_seen" in profile else None
         self.__dectivated = profile["deactivated"] if "deactivated" in profile else False
-        self.__count_days_offline = None
         self.__link = "https://vk.com/id" + str(profile["id"])
-        self.__service = serviceVk.ServiceVk()
+        self.__count_days_offline = None
 
     def get_id(self):
         return self.__id
@@ -36,7 +36,7 @@ class Account:
     def get_days_offline(self):
         return self.__count_days_offline
 
-    def __get_last_seen(self):
+    def get_last_seen(self):
         return self.__last_seen
 
     def get_count_banned(self):
@@ -66,8 +66,8 @@ class Account:
 
         def add_info_count_not_active_days(account):
             nonlocal currently_date
-            last_seen_of_account = datetime.datetime.fromtimestamp(
-                account.__get_last_seen()).date()
+            last_seen_of_account = datetime.datetime.fromtimestamp(account.get_last_seen())
+            last_seen_of_account = last_seen_of_account.date()
             days_offline = (currently_date - last_seen_of_account).days
             account.add_count_days_offline(days_offline)
             return account
