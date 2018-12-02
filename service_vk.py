@@ -3,10 +3,14 @@
 import os
 import requests
 import account
+from dotenv import load_dotenv
+
+
+load_dotenv()
 
 
 class ServiceVk:
-    __ACCESS_TOKEN = os.environ["VK_ACCESS_TOKEN"]
+    __ACCESS_TOKEN = os.getenv("VK_ACCESS_TOKEN")
     __VK_API = "https://api.vk.com/method/"
     __API_VERSION = "5.80"
     __LANGUAGE = "ru"
@@ -17,12 +21,12 @@ class ServiceVk:
         vk_user = account.Account(account_info)
         return vk_user
 
-    def check_id_on_exists(self, vk_account_id):
+    def check_id_on_exists(self, vk_account_ids):
         request_info_of_user = self.__request_json(
-            "users.get", params={"user_ids": vk_account_id})
+            "users.get", params={"user_ids": vk_account_ids})
         if "error" in request_info_of_user:
             raise IOError(request_info_of_user["error"]["error_msg"])
-        elif len(request_info_of_user["response"]) == 0:
+        elif not request_info_of_user["response"]:
             raise IOError("Sorry but account isn't exists")
         elif "deactivated" in request_info_of_user["response"][0]:
             raise IOError("Try again this account is: " +
