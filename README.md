@@ -8,7 +8,7 @@ The Parser friends of user in vk.com. <br>
 This console applications has witten on <b>python3</b> and use <b>request</b> lib. <br>
 ```pip3 install requests```
 
-Here list of functional:
+Here is list of functional:
 * You can know who friends are delited or banned on account
 * You can know who friends are offline for half year long
 
