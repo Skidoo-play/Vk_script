@@ -75,16 +75,12 @@ Currently account: {account}""")
         count_banned = len(ban_and_del_acc["deleted"])
         print("****************")
         print(f'All friends: ({count_friends}).')
-        print("Your banned friends: ")
+        print(f"Your banned friends: ({count_banned}). ")
         for banned_account in ban_and_del_acc["banned"]:
             print(f'{banned_account.full_name} ({banned_account.account_link})')
-        print(
-            f'    Count: {"You havent banned accounts in friends" if (count_banned == 0) else {count_banned}}')
-        print("Your deleted friends: ")
+        print(f"Your deleted friends: ({count_deleted}). ")
         for deleted_account in ban_and_del_acc["deleted"]:
             print(f'{deleted_account.full_name} ({deleted_account.account_link})')
-        print(
-            f'    Count: {"You havent deleted accounts in friends" if (count_deleted == 0) else {count_deleted}}')
         print("****************")
 
     elif answer == "3":
@@ -92,15 +88,15 @@ Currently account: {account}""")
             please_set_user_message()
             continue
         print("****************")
-        friends = anon.get_non_active_friends()
-        friends = sorted(
-            friends, key=lambda friend: friend.get_days_offline(), reverse=1)
-        count_friends = len(friends)
-        for friend in friends:
+        non_active_friends = anon.get_non_active_friends()
+        non_active_friends = sorted(
+            non_active_friends, key=lambda friend: friend.get_days_offline(), reverse=1)
+        count_non_active_friends = len(non_active_friends)
+        print(
+            f"Your non active friends friends: ({count_non_active_friends}). ")
+        for friend in non_active_friends:
             print(
                 f'{friend.full_name} \n  offline: {friend.get_days_offline()} days. ({friend.account_link})')
-        print(
-            f'Count: {"Zero accounts" if (count_friends == 0) else {count_friends}}')
         print("****************")
 
     else:
