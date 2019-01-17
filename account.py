@@ -18,34 +18,29 @@ class Account:
             self.__days_offline = None
             self.__date_of_last_seen = None
 
-    def get_id(self):
+    @property
+    def id(self):
         return self.__profile["id"]
 
-    def get_name(self):
+    @property
+    def full_name(self):
         return self.__profile["first_name"] + " " + self.__profile["last_name"]
 
-    def get_link(self):
+    @property
+    def account_link(self):
         return "https://vk.com/id" + str(self.__profile["id"])
 
     def get_public_friends(self):
         friends_list = self.__service.requests_public_friend_list(
-            self.get_id(), "online, last_seen")
+            self.id, "online, last_seen")
         return friends_list
 
     def get_days_offline(self):
         return self.__days_offline
 
-    def get_last_seen(self):
+    @property
+    def last_seen(self):
         return self.__date_of_last_seen
-
-    def get_count_banned(self):
-        return len(self.get_banned_and_deleted_friends()["banned"])
-
-    def get_count_deleted(self):
-        return len(self.get_banned_and_deleted_friends()["deleted"])
-
-    def get_count_friends(self):
-        return len(self.get_public_friends())
 
     def get_banned_and_deleted_friends(self):
         friends_list = self.get_public_friends()

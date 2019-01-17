@@ -45,10 +45,10 @@ while True:
 Currently account: {account}""")
     answer = input("Choose number of menu item: ")
 
-    if (answer == "0"):
+    if answer == "0":
         break
 
-    elif (answer == "1"):
+    elif answer == "1":
         anon_id = input("Input vk id: https://vk.com/")
         try:
             service.check_id_on_exists(anon_id)
@@ -62,31 +62,32 @@ Currently account: {account}""")
             continue
         anon = service.request_info_of_account(anon_id)
         auth = True
-        account = f'{color.cyan(anon.get_name())} ({anon.get_link()}).\n'
+        account = f'{color.cyan(anon.full_name)} ({anon.full_name}).\n'
         done_message()
 
-    elif (answer == "2"):
+    elif answer == "2":
         if auth == False:
             please_set_user_message()
             continue
         ban_and_del_acc = anon.get_banned_and_deleted_friends()
-        count_deleted = anon.get_count_deleted()
-        count_banned = anon.get_count_banned()
+        count_friends = len(anon.get_public_friends())
+        count_deleted = len(ban_and_del_acc["banned"])
+        count_banned = len(ban_and_del_acc["deleted"])
         print("****************")
-        print(f'All friends: ({anon.get_count_friends()}).')
+        print(f'All friends: ({count_friends}).')
         print("Your banned friends: ")
         for banned_account in ban_and_del_acc["banned"]:
-            print(f'{banned_account.get_name()} ({banned_account.get_link()})')
+            print(f'{banned_account.full_name} ({banned_account.account_link})')
         print(
             f'    Count: {"You havent banned accounts in friends" if (count_banned == 0) else {count_banned}}')
         print("Your deleted friends: ")
         for deleted_account in ban_and_del_acc["deleted"]:
-            print(f'{deleted_account.get_name()} ({deleted_account.get_link()})')
+            print(f'{deleted_account.full_name} ({deleted_account.account_link})')
         print(
             f'    Count: {"You havent deleted accounts in friends" if (count_deleted == 0) else {count_deleted}}')
         print("****************")
 
-    elif (answer == "3"):
+    elif answer == "3":
         if auth == False:
             please_set_user_message()
             continue
@@ -97,7 +98,7 @@ Currently account: {account}""")
         count_friends = len(friends)
         for friend in friends:
             print(
-                f'{friend.get_name()} \n  offline: {friend.get_days_offline()} days. ({friend.get_link()})')
+                f'{friend.full_name} \n  offline: {friend.get_days_offline()} days. ({friend.account_link})')
         print(
             f'Count: {"Zero accounts" if (count_friends == 0) else {count_friends}}')
         print("****************")
