@@ -42,20 +42,23 @@ class Account:
     def last_seen(self):
         return self.__date_of_last_seen
 
-    def get_banned_and_deleted_friends(self):
+    def get_deleted_friends(self):
         friends_list = self.get_public_friends()
-        deleted_accounts = list(filter(lambda friend: (
-            friend.is_deactivated() == "deleted"), friends_list))
-        banned_accounts = list(filter(lambda friend: (
-            friend.is_deactivated() == "banned"), friends_list))
-        return {"banned": banned_accounts, "deleted": deleted_accounts}
+        deleted_accounts = list(
+            filter(lambda friend: friend.is_deactivated() == "deleted", friends_list))
+        return deleted_accounts
+
+    def get_banned_friends(self):
+        friends_list = self.get_public_friends()
+        banned_accounts = list(
+            filter(lambda friend: friend.is_deactivated() == "deleted", friends_list))
+        return banned_accounts
 
     def get_non_active_friends(self):
-        non_active_accounts = []
         half_year = 365/2
         friends_list = self.get_public_friends()
-        offline_friends = filter(lambda friend: (not friend.is_online()) and (
-            not friend.is_deactivated()), friends_list)
+        offline_friends = filter(lambda friend: not friend.is_online(
+        ) and not friend.is_deactivated(), friends_list)
         non_active_accounts = filter(
             lambda user: user.get_days_offline() > half_year, offline_friends)
         non_active_accounts = list(non_active_accounts)

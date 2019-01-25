@@ -69,17 +69,18 @@ Currently account: {account}""")
         if auth == False:
             please_set_user_message()
             continue
-        ban_and_del_acc = anon.get_banned_and_deleted_friends()
+        banned_accounts = anon.get_banned_friends()
+        deleted_accounts = anon.get_deleted_friends()
         count_friends = len(anon.get_public_friends())
-        count_deleted = len(ban_and_del_acc["banned"])
-        count_banned = len(ban_and_del_acc["deleted"])
+        count_deleted = len(deleted_accounts)
+        count_banned = len(banned_accounts)
         print("****************")
         print(f'All friends: ({count_friends}).')
         print(f"Your banned friends: ({count_banned}). ")
-        for banned_account in ban_and_del_acc["banned"]:
+        for banned_account in banned_accounts:
             print(f'{banned_account.full_name} ({banned_account.account_link})')
         print(f"Your deleted friends: ({count_deleted}). ")
-        for deleted_account in ban_and_del_acc["deleted"]:
+        for deleted_account in deleted_accounts:
             print(f'{deleted_account.full_name} ({deleted_account.account_link})')
         print("****************")
 
