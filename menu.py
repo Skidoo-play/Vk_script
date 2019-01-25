@@ -1,7 +1,9 @@
 #!/usr/local/bin/python3
 
 import sys
+
 import color
+
 import account
 import service_vk
 

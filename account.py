@@ -1,6 +1,7 @@
 #!/usr/local/bin/python3
 
 import datetime
+
 import service_vk
 
 
@@ -31,7 +32,7 @@ class Account:
         return "https://vk.com/id" + str(self.__profile["id"])
 
     def get_public_friends(self):
-        friends_list = self.__service.requests_public_friend_list(
+        friends_list = self.__service.request_public_friend_list(
             self.id, "online, last_seen")
         return friends_list
 

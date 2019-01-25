@@ -1,10 +1,11 @@
 #!/usr/local/bin/python3
 
 import os
+
 import requests
-import account
 from dotenv import load_dotenv
 
+import account
 
 load_dotenv()
 
@@ -22,15 +23,15 @@ class ServiceVk:
         return vk_user
 
     def check_id_on_exists(self, vk_account_ids):
-        request_info_of_user = self.__request_json(
+        info_of_user = self.__request_json(
             "users.get", params={"user_ids": vk_account_ids})
-        if "error" in request_info_of_user:
-            raise IOError(request_info_of_user["error"]["error_msg"])
-        elif not request_info_of_user["response"]:
+        if "error" in info_of_user:
+            raise IOError(info_of_user["error"]["error_msg"])
+        elif not info_of_user["response"]:
             raise IOError("Sorry but account isn't exists")
-        elif "deactivated" in request_info_of_user["response"][0]:
+        elif "deactivated" in info_of_user["response"][0]:
             raise IOError("Try again this account is: " +
-                          request_info_of_user["response"][0]["deactivated"])
+                          info_of_user["response"][0]["deactivated"])
         return True
 
     def __request_json(self, method, params):
@@ -43,7 +44,7 @@ class ServiceVk:
         json_data = req.json()
         return json_data
 
-    def requests_public_friend_list(self, vk_account_id, fields="online"):
+    def request_public_friend_list(self, vk_account_id, fields="online"):
         parametrs = {"order": "name",
                      "fields": fields,
                      "user_id": vk_account_id}
