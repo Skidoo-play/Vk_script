@@ -19,18 +19,18 @@ class ServiceVk:
     def request_info_of_account(self, vk_account_id):
         account_info = self.__request_json("users.get", params={"user_ids": vk_account_id,
                                                                 "fields": "online"})["response"][0]
-        vk_user = account.Account(account_info)
-        return vk_user
+        vk_account = account.Account(account_info)
+        return vk_account
 
     def check_id_on_exists(self, vk_account_ids):
         info_of_user = self.__request_json(
             "users.get", params={"user_ids": vk_account_ids})
         if "error" in info_of_user:
-            raise IOError(info_of_user["error"]["error_msg"])
+            raise Exception(info_of_user["error"]["error_msg"])
         elif not info_of_user["response"]:
-            raise IOError("Sorry but account isn't exists")
+            raise Exception("Sorry but account isn't exists")
         elif "deactivated" in info_of_user["response"][0]:
-            raise IOError("Try again this account is: " +
+            raise Exception("Try again this account is: " +
                           info_of_user["response"][0]["deactivated"])
         return True
 
