@@ -56,7 +56,7 @@ Currently account: {account}""")
             service.check_id_on_exists(anon_id)
         except:
             print("****************")
-            print(color.red(f"""Syrry, but account: """), end="")
+            print(color.red("Syrry, but account: "), end="")
             print(color.colorize(color.BgColor.Null, color.Base.Underline,
                                  color.FgColor.Red, "vk.com/" + anon_id), end=" ")
             print(color.red("is not exists.\nPlease, try again"))
@@ -64,7 +64,7 @@ Currently account: {account}""")
             continue
         anon = service.request_info_of_account(anon_id)
         auth = True
-        account = f'{color.cyan(anon.full_name)} ({anon.full_name}).\n'
+        account = f'{color.cyan(anon.full_name)}.\n'
         done_message()
 
     elif answer == "2":
@@ -80,10 +80,12 @@ Currently account: {account}""")
         print(f'All friends: ({count_friends}).')
         print(f"Your banned friends: ({count_banned}). ")
         for banned_account in banned_accounts:
-            print(f'{banned_account.full_name} ({banned_account.account_link})')
+            print(
+                f'{color.cyan(banned_account.full_name)} ({banned_account.account_link})')
         print(f"Your deleted friends: ({count_deleted}). ")
         for deleted_account in deleted_accounts:
-            print(f'{deleted_account.full_name} ({deleted_account.account_link})')
+            print(
+                f'{color.cyan(deleted_account.full_name)} ({deleted_account.account_link})')
         print("****************")
 
     elif answer == "3":
@@ -99,7 +101,7 @@ Currently account: {account}""")
             f"Your non active friends friends: ({count_non_active_friends}). ")
         for friend in non_active_friends:
             print(
-                f'{friend.full_name} \n  offline: {friend.get_days_offline()} days. ({friend.account_link})')
+                f'{color.cyan(friend.full_name)} \n  offline: {color.red(friend.get_days_offline())} days. ({friend.account_link})')
         print("****************")
 
     else:

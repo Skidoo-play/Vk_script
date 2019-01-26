@@ -19,8 +19,17 @@ class ServiceVk:
     def request_info_of_account(self, vk_account_id):
         account_info = self.__request_json("users.get", params={"user_ids": vk_account_id,
                                                                 "fields": "online"})["response"][0]
-        vk_account = account.Account(account_info)
+        vk_account = self.__deserealize_account(account_info)
         return vk_account
+
+    def __deserealize_account(self, profile):
+        return account.Account(profile.get("id"),
+                               profile.get("first_name"),
+                               profile.get("last_name"),
+                               profile.get("online"),
+                               profile.get("last_seen"),
+                               profile.get("deactivated"))
+
 
     def check_id_on_exists(self, vk_account_ids):
         info_of_user = self.__request_json(
@@ -31,7 +40,7 @@ class ServiceVk:
             raise Exception("Sorry but account isn't exists")
         elif "deactivated" in info_of_user["response"][0]:
             raise Exception("Try again this account is: " +
-                          info_of_user["response"][0]["deactivated"])
+                            info_of_user["response"][0]["deactivated"])
         return True
 
     def __request_json(self, method, params):
@@ -49,7 +58,7 @@ class ServiceVk:
                      "fields": fields,
                      "user_id": vk_account_id}
         req = self.__request_json("friends.get", parametrs)
-        friends_list = req["response"]["items"]
+        response_accounts = req["response"]["items"]
 
-        friends_list = list(map(account.Account, friends_list))
+        friends_list = list(map(self.__deserealize_account, response_accounts))
         return friends_list
