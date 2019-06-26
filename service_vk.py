@@ -57,9 +57,10 @@ class ServiceVk:
         params = {
             "order": "name",
             "fields": ",".join(fields),
-            "user_id": account_vk_id
+            "user_id": int(account_vk_id)
         }
         req = cls.__request_json("friends.get", params)
+        print('****************')
+        print(req)
         response_accounts = req["response"]["items"]
-
         return response_accounts
