@@ -10,17 +10,19 @@ class AccountFacade:
 
     @staticmethod
     def __serealize_account(account_object):
+        """Return JSON string of account"""
         return AccountAssembler.serealize(account_object)
 
     @staticmethod
     def get_account(user_ids):
-        """"Return accountDTO object"""
+        """"Return JSON STRING"""
         account_vk = AccountFacade.__get_account(user_ids)
         account_vk_JSON = AccountFacade.__serealize_account(account_vk)
         return account_vk_JSON
 
     @staticmethod
     def get_friends(user_ids):
+        """Return JSON string"""
         account_vk = AccountFacade.__get_account(user_ids)
         friends_list = AccountMapper.get_public_friends(account_vk)
         friends_list_JSON = FriendsAssembler.serealize(friends_list)

@@ -41,7 +41,7 @@ class ServiceVk:
         return True
 
     @classmethod
-    def __request_json(cls,method, params):
+    def __request_json(cls, method, params):
         """return json data"""
         vk_method = cls.__VK_API + str(method)
         vk_access_token = "?access_token=" + cls.__ACCESS_TOKEN
@@ -53,11 +53,11 @@ class ServiceVk:
         return json_data
 
     @classmethod
-    def request_public_friend_list(cls, account_vk, fields=[Fields.ONLINE]):
+    def request_public_friend_list(cls, account_vk_id, fields=[Fields.ONLINE]):
         params = {
             "order": "name",
             "fields": ",".join(fields),
-            "user_id": account_vk.id
+            "user_id": account_vk_id
         }
         req = cls.__request_json("friends.get", params)
         response_accounts = req["response"]["items"]

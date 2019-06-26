@@ -27,7 +27,7 @@ class AccountDTO:
 
 class FriendsDTO:
     def __init__(self, friends_list):
-        self.friends_list = friends_list
+        self.friends_list = friends_list # OBJECTS
 
     def to_json(self):
         friends_list_DTO = map(AccountDTO, self.friends_list)
