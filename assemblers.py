@@ -5,6 +5,7 @@ from DTO import AccountDTO, FriendsDTO
 class AccountAssembler:
     @staticmethod
     def deserialize(json_of_account):
+        """Deserialize json to account object"""
         params = {
             "account_id": json_of_account.get("id"),
             "first_name": json_of_account.get('first_name'),
@@ -17,7 +18,8 @@ class AccountAssembler:
 
     @staticmethod
     def serealize(account_vk):
-        return AccountDTO(account_vk)
+        """Serealize account object to  JSON string"""
+        return AccountDTO(account_vk).to_json()
 
 
 class FriendsAssembler:
@@ -28,4 +30,4 @@ class FriendsAssembler:
 
     @staticmethod
     def serealize(friends_list):
-        return FriendsDTO(friends_list)
+        return FriendsDTO(friends_list).to_json()
