@@ -107,3 +107,6 @@ venv.bak/
 all friends.json
 .vscode
 .DS_store
+
+#PyCharm
+.idea
