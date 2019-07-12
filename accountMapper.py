@@ -1,6 +1,6 @@
 from service_vk import ServiceVk
 from assemblers import AccountAssembler, FriendsAssembler
-from paeameters import Fields
+
 
 class AccountMapper:
     @staticmethod
@@ -11,16 +11,17 @@ class AccountMapper:
 
     @staticmethod
     def get_public_friends(account_vk):
-        """Return accaunts list"""
-        json_friends_list = ServiceVk.request_public_friend_list(account_vk.id, [Fields.ONLINE, Fields.LAST_SEEN])
+        """Return accounts list"""
+        json_friends_list = ServiceVk.request_public_friend_list(account_vk.id,
+                                                                 [ServiceVk.fields.ONLINE,
+                                                                  ServiceVk.fields.LAST_SEEN])
         return FriendsAssembler.deserialize(json_friends_list)
 
     @staticmethod
     def get_deleted_friends(account_vk):
         friends_list = AccountMapper.get_public_friends(account_vk)
         deleted_accounts = list(
-            filter(lambda friend: friend.is_deactivatedrequest_public_friend_list
-                                  () == "deleted", friends_list)
+            filter(lambda friend: friend.is_deactivatedrequest_public_friend_list() == "deleted", friends_list)
         )
         return deleted_accounts
 

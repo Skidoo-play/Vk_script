@@ -5,7 +5,7 @@ import os
 import requests
 from dotenv import load_dotenv
 
-from paeameters import Fields
+from parameters import Fields
 from methods import Methods
 
 load_dotenv()
@@ -16,19 +16,23 @@ class ServiceVk:
     __VK_API = "https://api.vk.com/method/"
     __API_VERSION = "5.80"
     __LANGUAGE = "en"
+    fields = Fields()
+    methods = Methods()
 
     @classmethod
-    def request_info_of_account(cls, user_ids = []):
+    def request_info_of_account(cls, user_ids=[]):
+        """return array of accounts"""
         params = {
             "user_ids": ','.join(user_ids),
-            "fields": Fields.ONLINE
+            "fields": cls.fields.ONLINE
         }
 
-        user_ids_json = cls.__request_json(Methods.USER_GET, params=params)
+        user_ids_json = cls.__request_json(cls.methods.USER_GET, params=params)
         return user_ids_json["response"]
 
     @staticmethod
     def check_id_on_exists(self, vk_account_ids):
+        """return bool"""
         info_of_user = self.__request_json(
             "users.get", params={"user_ids": vk_account_ids})
         if "error" in info_of_user:
@@ -53,14 +57,13 @@ class ServiceVk:
         return json_data
 
     @classmethod
-    def request_public_friend_list(cls, account_vk_id, fields=[Fields.ONLINE]):
+    def request_public_friend_list(cls, account_vk_id, fields=[]):
+        """return json data accounts"""
         params = {
             "order": "name",
             "fields": ",".join(fields),
             "user_id": int(account_vk_id)
         }
         req = cls.__request_json("friends.get", params)
-        print('****************')
-        print(req)
         response_accounts = req["response"]["items"]
         return response_accounts
