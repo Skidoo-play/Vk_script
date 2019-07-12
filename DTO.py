@@ -10,6 +10,7 @@ class AccountDTO:
         self.is_deactivated = account_vk.is_deactivated()
         self.last_seen = account_vk.last_seen
         self.days_offline = account_vk.get_days_offline()
+        self.photo_link = account_vk.avatar_link
 
     def to_json(self):
         json_data = dict()
@@ -21,6 +22,7 @@ class AccountDTO:
         json_data['is_deactivated'] = self.is_deactivated
         json_data['days_offline'] = self.days_offline
         json_data['last_seen'] = self.last_seen
+        json_data['avatar'] = self.photo_link #TODO Фильтрацию по пустым полям- грубо говоря фильтер если ключ пустой- нахуй из ДТО
 
         return json_data
 
