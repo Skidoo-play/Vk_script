@@ -14,7 +14,8 @@ class AccountMapper:
         """Return accounts list"""
         json_friends_list = ServiceVk.request_public_friend_list(account_vk.id,
                                                                  [ServiceVk.fields.ONLINE,
-                                                                  ServiceVk.fields.LAST_SEEN])
+                                                                  ServiceVk.fields.LAST_SEEN,
+                                                                  ServiceVk.fields.Photo.MEDIUM])
         return FriendsAssembler.deserialize(json_friends_list)
 
     @staticmethod
