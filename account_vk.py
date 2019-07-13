@@ -4,13 +4,14 @@ import datetime
 
 
 class Account:
-    def __init__(self, account_id, first_name, last_name, online, last_seen, deactivated):
+    def __init__(self, account_id, first_name, last_name, online, last_seen, deactivated, ava_link):
         self.id = account_id
         self.first_name = first_name
         self.last_name = last_name
         self.last_seen = last_seen
         self.deactivated = deactivated
         self.online = online
+        self.ava_link = ava_link
 
     @property
     def full_name(self):
@@ -23,6 +24,10 @@ class Account:
     @property
     def is_online(self):
         return self.online == 1
+
+    @property
+    def avatar_link(self):
+        return self.ava_link if self.ava_link else ''
 
     def get_days_offline(self):
         if self.last_seen:

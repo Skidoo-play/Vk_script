@@ -6,7 +6,8 @@ class AccountMapper:
     @staticmethod
     def get_user(user_ids):
         """Return account object"""
-        json = ServiceVk.request_info_of_account([user_ids])[0]
+        json = ServiceVk.request_info_of_account([user_ids],[ServiceVk.fields.ONLINE,
+                                                             ServiceVk.fields.Photo.MEDIUM])[0]
         return AccountAssembler.deserialize(json)
 
     @staticmethod
@@ -14,14 +15,15 @@ class AccountMapper:
         """Return accounts list"""
         json_friends_list = ServiceVk.request_public_friend_list(account_vk.id,
                                                                  [ServiceVk.fields.ONLINE,
-                                                                  ServiceVk.fields.LAST_SEEN])
+                                                                  ServiceVk.fields.LAST_SEEN,
+                                                                  ServiceVk.fields.Photo.MEDIUM])
         return FriendsAssembler.deserialize(json_friends_list)
 
     @staticmethod
     def get_deleted_friends(account_vk):
         friends_list = AccountMapper.get_public_friends(account_vk)
         deleted_accounts = list(
-            filter(lambda friend: friend.is_deactivatedrequest_public_friend_list() == "deleted", friends_list)
+            filter(lambda friend: friend.is_deactivated() == "deleted", friends_list)
         )
         return deleted_accounts
 
