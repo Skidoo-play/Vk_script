@@ -13,10 +13,27 @@ def user():
 
 
 @app.route('/user/friends')
-def f():
+def friends():
     user_ids = request.args.get('user_ids', default=None, type=str)
     return jsonify(AccountFacade.get_friends(user_ids))
 
+
+@app.route('/user/banned_friends')
+def banned_friends():
+    user_ids = request.args.get('user_ids', default=None, type=str)
+    return jsonify(AccountFacade.get_banned_friends(user_ids))
+
+
+@app.route('/user/deleted_friends')
+def deleted_friends():
+    user_ids = request.args.get('user_ids', default=None, type=str)
+    return jsonify(AccountFacade.get_deleted_friends(user_ids))
+
+
+@app.route('/user/abandoned_friends')
+def abandoned_friends():
+    user_ids = request.args.get('user_ids', default=None, type=str)
+    return jsonify(AccountFacade.get_abandoned_friends(user_ids))
 
 if __name__ == '__main__':
     app.run()
