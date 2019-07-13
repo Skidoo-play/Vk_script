@@ -20,11 +20,11 @@ class ServiceVk:
     methods = Methods()
 
     @classmethod
-    def request_info_of_account(cls, user_ids=[]):
+    def request_info_of_account(cls, user_ids=[], fields=[]):
         """return array of accounts"""
         params = {
             "user_ids": ','.join(user_ids),
-            "fields": cls.fields.ONLINE
+            "fields": ','.join(fields)
         }
 
         user_ids_json = cls.__request_json(cls.methods.USER_GET, params=params)
@@ -45,8 +45,14 @@ class ServiceVk:
         return True
 
     @classmethod
+    def __check_vk_token(cls):
+        if not cls.__ACCESS_TOKEN:
+            raise Exception("Vk access token not found please put it into .env file VK_ACCESS_TOKEN='your-token'")
+
+    @classmethod
     def __request_json(cls, method, params):
         """return json data"""
+        cls.__check_vk_token()
         vk_method = cls.__VK_API + str(method)
         vk_access_token = "?access_token=" + cls.__ACCESS_TOKEN
         vk_api_v = "&v=" + cls.__API_VERSION
