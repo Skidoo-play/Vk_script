@@ -1,9 +1,19 @@
 from flask import Flask
 from flask import jsonify
 from flask import request
+from flask import send_from_directory
 from remoteFacade import AccountFacade
 
-app = Flask(__name__)
+app = Flask(__name__, static_folder='dist')
+
+@app.route('/')
+def foo():
+    return app.send_static_file("index.html")
+
+
+@app.route('/<path:path>')
+def static_dist(path):
+    return send_from_directory("dist", path)
 
 
 @app.route('/user')
