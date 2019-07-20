@@ -1,21 +1,23 @@
 from flask import Flask
 from flask import jsonify
 from flask import request
-from flask import send_from_directory
+from flask import render_template
 from remoteFacade import AccountFacade
 from flask_cors import CORS
 
-app = Flask(__name__, static_folder='dist')
-CORS(app)
+app = Flask(__name__,
+            static_folder = "./dist/",
+            template_folder = "./dist")
+cors = CORS(app, resources={r"/api/*": {"origins": "*"}})
 
 @app.route('/')
-def foo():
-    return app.send_static_file("index.html")
+def index():
+    return render_template("index.html")
 
 
-@app.route('/<path:path>')
-def static_dist(path):
-    return send_from_directory("dist", path)
+@app.errorhandler(404)
+def catch_error(e):
+    return render_template('index.html'), 200
 
 
 @app.route('/api/user')
@@ -48,4 +50,4 @@ def abandoned_friends():
     return jsonify(AccountFacade.get_abandoned_friends(user_ids))
 
 if __name__ == '__main__':
-    app.run()
+    app.run(host='0.0.0.0')
