@@ -1,23 +1,21 @@
 from flask import Flask
 from flask import jsonify
 from flask import request
-from flask import render_template
+from flask import send_from_directory
 from remoteFacade import AccountFacade
 from flask_cors import CORS
 
-app = Flask(__name__,
-            static_folder = "./dist/",
-            template_folder = "./dist")
-cors = CORS(app, resources={r"/api/*": {"origins": "*"}})
+app = Flask(__name__, static_folder='dist')
+CORS(app)
 
 @app.route('/')
 def index():
-    return render_template("index.html")
+    return app.send_static_file("index.html")
 
 
-@app.errorhandler(404)
-def catch_error(e):
-    return render_template('index.html'), 200
+@app.route('/<path:path>')
+def static_dist(path):
+    return send_from_directory("dist", path)
 
 
 @app.route('/api/user')
