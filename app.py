@@ -45,7 +45,8 @@ def deleted_friends():
 @app.route('/api/user/abandoned_friends')
 def abandoned_friends():
     user_ids = request.args.get('user_ids', default=None, type=str)
-    return jsonify(AccountFacade.get_abandoned_friends(user_ids))
+    days_offline = request.args.get('days_offline', default=365/2, type=int)
+    return jsonify(AccountFacade.get_abandoned_friends(user_ids, days_offline))
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0')

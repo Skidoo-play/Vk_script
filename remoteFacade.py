@@ -45,9 +45,9 @@ class AccountFacade: #TODO добавить метод для проверки �
         return deleted_friends_JSON
 
     @staticmethod
-    def get_abandoned_friends(user_ids):
+    def get_abandoned_friends(user_ids, days_offline):
         """Return JSON string"""
         account_vk = AccountFacade.__get_account(user_ids)
-        abandoned_friends = AccountMapper.get_non_active_friends(account_vk)
+        abandoned_friends = AccountMapper.get_non_active_friends(account_vk, days_offline=days_offline)
         abandoned_friends_JSON = FriendsAssembler.serealize(abandoned_friends)
         return abandoned_friends_JSON
