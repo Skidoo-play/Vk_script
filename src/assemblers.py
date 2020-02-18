@@ -1,5 +1,5 @@
-from account_vk import Account
-from DTO import AccountDTO, FriendsDTO
+from .account_vk import Account
+from .DTO import AccountDTO, FriendsDTO
 
 
 class AccountAssembler:

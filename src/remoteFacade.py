@@ -1,5 +1,5 @@
-from accountMapper import AccountMapper
-from assemblers import AccountAssembler, FriendsAssembler
+from .accountMapper import AccountMapper
+from .assemblers import AccountAssembler, FriendsAssembler
 
 
 class AccountFacade: #TODO добавить метод для проверки существования аккаунта

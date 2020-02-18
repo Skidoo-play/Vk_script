@@ -2,7 +2,7 @@ from flask import Flask
 from flask import jsonify
 from flask import request
 from flask import send_from_directory
-from remoteFacade import AccountFacade
+from src import AccountFacade
 from flask_cors import CORS
 
 app = Flask(__name__, static_folder='dist')

@@ -5,8 +5,8 @@ import os
 import requests
 from dotenv import load_dotenv
 
-from parameters import Fields
-from methods import Methods
+from .parameters import Fields
+from .methods import Methods
 
 load_dotenv()
 

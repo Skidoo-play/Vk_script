@@ -1,5 +1,5 @@
-from service_vk import ServiceVk
-from assemblers import AccountAssembler, FriendsAssembler
+from .service_vk import ServiceVk
+from .assemblers import AccountAssembler, FriendsAssembler
 
 
 class AccountMapper:
