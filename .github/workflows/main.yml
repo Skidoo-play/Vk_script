@@ -1,0 +1,28 @@
+name: Run tests on any Push event
+# Запуск при любом push евенте в любой ветке, за исключением релизных тэгов.
+# Они будт тестироваться перед сборкой
+on:
+  push:
+    tags:
+      - '!refs/tags/*'
+    branches:
+      - '*'
+jobs:
+  run_tests:
+    runs-on: [ubuntu-latest]
+    steps:
+      # Чекаутим код
+      - uses: actions/checkout@master
+      # Устанавливаем python нужной версии
+      - uses: actions/setup-python@v1
+        with:
+          python-version: '3.8'
+          architecture: 'x64'
+      - name: Install requirements
+        run: pip install -r requirements.txt
+      - name: Put secret
+        run: echo "VK_ACCESS_TOKEN=${{ secrets.VK_ACCESS_TOKEN }}" > .env
+      - name: Run tests
+        run: coverage run app_tests.py
+      - name: Tests report
+        run: coverage report

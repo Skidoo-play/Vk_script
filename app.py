@@ -4,7 +4,7 @@ from flask import request
 from flask import send_from_directory
 from src import AccountFacade
 from flask_cors import CORS
-
+# bar 
 app = Flask(__name__, static_folder='dist')
 CORS(app)
 
