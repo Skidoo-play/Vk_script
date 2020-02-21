@@ -1,4 +1,4 @@
-# Vk_script
+# Vk_script_
 The Parser friends of user in vk.com. <br>
 <br> This soft was created for only training developer skills.
 <br>I will glad if you show me my mistakes in code. <br/> 
