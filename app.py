@@ -12,6 +12,10 @@ CORS(app)
 def index():
     return app.send_static_file("index.html")
 
+@app.errorhandler(404)
+def catch_error(e):
+  return app.send_static_file('index.html'), 200
+
 
 @app.route('/<path:path>')
 def static_dist(path):
