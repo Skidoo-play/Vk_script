@@ -1,12 +1,10 @@
-name: Run tests on any Push event
+name: App tests
 # Запуск при любом push евенте в любой ветке, за исключением релизных тэгов.
 # Они будт тестироваться перед сборкой
 on:
   push:
-    tags:
-      - '!refs/tags/*'
     branches:
-      - '*'
+      - master
 jobs:
   run_tests:
     runs-on: [ubuntu-latest]
@@ -16,8 +14,8 @@ jobs:
       # Устанавливаем python нужной версии
       - uses: actions/setup-python@v1
         with:
-          python-version: '3.8'
-          architecture: 'x64'
+          python-version: "3.8"
+          architecture: "x64"
       - name: Install requirements
         run: pip install -r requirements.txt
       - name: Put secret
