@@ -1,6 +1,6 @@
 
 class User:
-    URL = "/api/user?user_ids=shzfrnia"
+    URL = "/api/user/shzfrnia"
     RESULT = {
         "avatar": "https://sun9-68.userapi.com/c856032/v856032090/108f51/ObW5ybDwiZ8.jpg?ava=1",
         "days_offline": None,
